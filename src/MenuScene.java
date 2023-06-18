@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -18,31 +19,55 @@ public class MenuScene extends Scene {
     private FlowPane titlePane;
     private VBox buttonPane;
     private Label title;
-    private Button start,exit;
+    private Button start,exit,credits;
     private Region spacer;
 
     private CloseListener closeListener;
+    private PlayListener playListener;
+    private CreditsListener creditsListener;
 
-    public MenuScene(BorderPane root) {
-        super(root);
-        this.root = root;
+    public MenuScene() {
+        super(new BorderPane());
+        root = (BorderPane) getRoot();
 
         // INIT
         titlePane = new FlowPane();
         buttonPane = new VBox();
 
+        // BACKGROUND
+            // Image by upklyak on Freepik
+        root.setBackground(new Background(new BackgroundImage(
+                new Image("assets/ui/forest.jpg"),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.CENTER,
+                new BackgroundSize(1080,720,true,true,true,true)
+        )));
+
         // TITLE
         title = new Label("PROJEKT GUI");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 50));
-        title.setTextFill(Color.BLACK);
+        title.setTextFill(Color.WHITE);
 
         titlePane.setAlignment(Pos.TOP_CENTER);
         titlePane.getChildren().addAll(title);
 
         // BUTTONS
         start = new Button("Zacznij");
-        exit = new Button("Wyjdź");
+        start.setOnAction(event -> {
+            if (playListener != null) {
+                playListener.onPlay();
+            }
+        });
 
+        credits = new Button("Credits");
+        credits.setOnAction(event -> {
+            if (creditsListener != null) {
+                creditsListener.onCredits();
+            }
+        });
+
+        exit = new Button("Wyjdź");
         exit.setOnAction(event -> {
             if (closeListener != null) {
                 closeListener.onClose();
@@ -50,7 +75,7 @@ public class MenuScene extends Scene {
         });
 
         buttonPane.setAlignment(Pos.CENTER);
-        buttonPane.getChildren().addAll(start,exit);
+        buttonPane.getChildren().addAll(start,credits,exit);
         buttonPane.getChildren().forEach(node->{
             Button button = (Button) node;
             button.setPrefHeight(40);
@@ -72,8 +97,17 @@ public class MenuScene extends Scene {
     public void setCloseListener(CloseListener closeListener) {
         this.closeListener = closeListener;
     }
+    public void setPlayListener(PlayListener playListener) {
+        this.playListener = playListener;
+    }
+    public void setCreditsListener(CreditsListener creditsListener) {
+        this.creditsListener = creditsListener;
+    }
 }
 
-interface CloseListener {
-    void onClose();
+interface PlayListener {
+    void onPlay();
+}
+interface CreditsListener {
+    void onCredits();
 }
