@@ -76,4 +76,10 @@ public abstract class GameCharacter {
     public DoubleProperty critChanceProperty() {
         return critChance;
     }
+    public boolean isAlive() {
+        return getHealthPoints()>0;
+    }
+    public boolean isDead() {
+        return getHealthPoints()<=0;
+    }
 }

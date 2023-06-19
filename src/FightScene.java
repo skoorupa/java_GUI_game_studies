@@ -29,6 +29,7 @@ public class FightScene extends Scene {
     private InventoryPane inventoryPane;
 
     private ArrayList<EscapeListener> escapeListeners;
+    private ArrayList<ScoreListener> scoreListeners;
 
     public FightScene() {
         super(new BorderPane());
@@ -51,6 +52,7 @@ public class FightScene extends Scene {
         );
 
         escapeListeners = new ArrayList<>();
+        scoreListeners = new ArrayList<>();
 
         // BACKGROUND
         // Image by upklyak on Freepik
@@ -156,11 +158,15 @@ public class FightScene extends Scene {
                         actionPane.setVisible(false);
                     }),
                     new KeyFrame(Duration.seconds(1), (evt)-> {
-                        EnemyHandler.attackHero();
-                        animateImageDamage(player_imageView);
+                        if (EnemyHandler.attackHero())
+                            animateImageDamage(player_imageView);
                     }),
                     new KeyFrame(Duration.seconds(2),(evt)->{
                         actionPane.setVisible(true);
+                        if (getHero().isDead())
+                            scoreListeners.forEach((scoreListener)->scoreListener.onScore(false, getEnemy()));
+                        else if (getEnemy().isDead())
+                            scoreListeners.forEach((scoreListener)->scoreListener.onScore(true, getEnemy()));
                     })
             );
             timeline.play();
@@ -185,6 +191,7 @@ public class FightScene extends Scene {
     public void addEscapeListener(EscapeListener escapeListener) {
         this.escapeListeners.add(escapeListener);
     }
+    public void addScoreListener(ScoreListener scoreListener) {this.scoreListeners.add(scoreListener);}
     public Hero getHero() {
         return HeroHandler.getHero();
     }

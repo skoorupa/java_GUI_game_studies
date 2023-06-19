@@ -98,6 +98,10 @@ public class Hero extends GameCharacter {
         return cash.get();
     }
 
+    public void setCash(int cash) {
+        this.cash.set(cash);
+    }
+
     public IntegerProperty cashProperty() {
         return cash;
     }

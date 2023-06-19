@@ -19,14 +19,17 @@ public class EnemyHandler {
         return getCurrentEnemy();
     }
 
-    public static void attackHero() {
+    public static boolean attackHero() {
         Hero hero = HeroHandler.getHero();
         boolean isCrit = getCurrentEnemy().getCritChance()>Math.random();
         int defendValue = hero.getDefendPoints();
-        int damageValue = Math.max(getCurrentEnemy().getAttackPoints()-defendValue,15);
+        int damageValue = Math.max(getCurrentEnemy().getAttackPoints()-defendValue,5);
         if (isCrit) damageValue *= 0.5;
 
-        hero.getHit(damageValue);
+        if (getCurrentEnemy().getHealthPoints()>0) {
+            hero.getHit(damageValue);
+            return true;
+        } else return false;
     }
 
     public static Enemy getCurrentEnemy() {

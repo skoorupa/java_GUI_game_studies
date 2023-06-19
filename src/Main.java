@@ -7,6 +7,7 @@ public class Main extends Application {
     private static CreditsScene creditsScene;
     private static FightScene fightScene;
     private static PreviewEnemyScene previewEnemyScene;
+    private static ScoreScene scoreScene;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -36,6 +37,14 @@ public class Main extends Application {
             previewEnemyScene.addFightListener(()->{
                 fightScene = new FightScene();
                 fightScene.addEscapeListener(()->escapeAction(stage));
+                fightScene.addScoreListener(((win, enemy) -> {
+                    System.out.println("score");
+                    scoreScene = new ScoreScene(win, enemy);
+                    scoreScene.addBackToWelcomeListener(()->{
+                        stage.setScene(welcomeScene);
+                    });
+                    stage.setScene(scoreScene);
+                }));
                 stage.setScene(fightScene);
             });
         });
