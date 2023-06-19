@@ -2,10 +2,11 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-    private MenuScene menuScene;
-    private WelcomeScene welcomeScene;
-    private CreditsScene creditsScene;
-    private PreviewEnemyScene previewEnemyScene;
+    private static MenuScene menuScene;
+    private static WelcomeScene welcomeScene;
+    private static CreditsScene creditsScene;
+    private static FightScene fightScene;
+    private static PreviewEnemyScene previewEnemyScene;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -25,21 +26,36 @@ public class Main extends Application {
         });
 
         welcomeScene.addPreviewEnemyListener(()->{
-            EnemyHandler.pickEnemy();
+            if (HeroHandler.getHero().isEscapeSuccess())
+                EnemyHandler.pickEnemy();
             previewEnemyScene = new PreviewEnemyScene();
             stage.setScene(previewEnemyScene);
+
+            previewEnemyScene.addEscapeListener(()->escapeAction(stage));
+
+            previewEnemyScene.addFightListener(()->{
+                fightScene = new FightScene();
+                fightScene.addEscapeListener(()->escapeAction(stage));
+                stage.setScene(fightScene);
+            });
         });
 
-        creditsScene.setCloseListener(()->showMenuScene(stage));
+        creditsScene.setCloseListener(()->stage.setScene(menuScene));
 
         stage.setTitle("Projekt");
         stage.setHeight(720);
         stage.setWidth(1080);
-        showMenuScene(stage);
+        stage.setScene(menuScene);
         stage.show();
     }
 
-    public void showMenuScene(Stage stage) {
-        stage.setScene(menuScene);
+    public static void escapeAction(Stage stage) {
+        HeroHandler.getHero().tryToEscape(EnemyHandler.getCurrentEnemy());
+        if (HeroHandler.getHero().isEscapeSuccess()) {
+            stage.setScene(welcomeScene);
+        } else {
+            stage.setScene(welcomeScene);
+            System.out.println("nie udało się uciec");
+        }
     }
 }

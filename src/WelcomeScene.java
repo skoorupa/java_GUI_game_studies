@@ -1,30 +1,12 @@
 import GameMechanisms.Hero;
-import GameMechanisms.Item;
-import GameMechanisms.ItemType;
-import javafx.beans.binding.Bindings;
-import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
-import javafx.collections.ObservableList;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.util.Callback;
-import javafx.util.Duration;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executor;
-import java.util.function.Consumer;
 
 public class WelcomeScene extends Scene {
     private BorderPane root;
@@ -43,7 +25,7 @@ public class WelcomeScene extends Scene {
         shopPane = new VBox();
         fightPane = new VBox();
         playerPane = new FlowPane();
-        inventoryPane = new InventoryPane(root);
+        inventoryPane = new InventoryPane(root.widthProperty(), true);
 
         shopButton = new Button();
         fightButton = new Button();

@@ -1,9 +1,10 @@
-import GameMechanisms.Enemy;
-import GameMechanisms.Hero;
+import GameMechanisms.*;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -14,17 +15,18 @@ import javafx.scene.text.FontWeight;
 
 import java.util.ArrayList;
 
-public class PreviewEnemyScene extends Scene {
+public class FightScene extends Scene {
     private BorderPane root;
     private GridPane heroAndEnemyStatsPane, heroAndEnemyPane;
     private PlayerStatsPane heroStatsPane, enemyStatsPane;
     private VBox heroPane, enemyPane;
-    private FlowPane optionsPane;
+    private HBox actionPane;
+    private Button escapeButton, attackButton;
+    private InventoryPane inventoryPane;
 
     private ArrayList<EscapeListener> escapeListeners;
-    private ArrayList<FightListener> fightListeners;
 
-    public PreviewEnemyScene() {
+    public FightScene() {
         super(new BorderPane());
         root = (BorderPane) getRoot();
 
@@ -35,10 +37,15 @@ public class PreviewEnemyScene extends Scene {
         heroAndEnemyPane = new GridPane();
         heroPane = new VBox();
         enemyPane = new VBox();
-        optionsPane = new FlowPane();
+        actionPane = new HBox();
+        escapeButton = new Button("Ucieczka");
+        attackButton = new Button("Atak");
+        inventoryPane = new InventoryPane(
+                root.widthProperty().subtract(escapeButton.widthProperty()).subtract(attackButton.widthProperty()),
+                false
+        );
 
         escapeListeners = new ArrayList<>();
-        fightListeners = new ArrayList<>();
 
         // BACKGROUND
         // Image by upklyak on Freepik
@@ -70,7 +77,7 @@ public class PreviewEnemyScene extends Scene {
         centerColumn2.setHgrow(Priority.ALWAYS);
         heroAndEnemyPane.getColumnConstraints().addAll(centerColumn1,centerColumn2);
 
-            // HEROPANE
+        // HEROPANE
         Image player_image = new Image(getHero().getAssetPath());
         ImageView player_imageView = new ImageView(player_image);
         player_imageView.setPreserveRatio(true);
@@ -78,15 +85,15 @@ public class PreviewEnemyScene extends Scene {
                 root.heightProperty().subtract(
                         heroAndEnemyStatsPane.heightProperty()
                 ).subtract(
-                        optionsPane.heightProperty()
+                        actionPane.heightProperty()
                 )
         );
         heroPane.getChildren().addAll(player_imageView);
         heroPane.setAlignment(Pos.CENTER);
 
-            // ENEMYPANE
+        // ENEMYPANE
         Label enemyNameLabel = new Label(getEnemy().getName());
-        enemyNameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 50));
+        enemyNameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 30));
         enemyNameLabel.setTextFill(Color.WHITE);
 
         Image enemy_image = new Image(getEnemy().getAssetPath());
@@ -96,7 +103,7 @@ public class PreviewEnemyScene extends Scene {
                 root.heightProperty().subtract(
                         heroAndEnemyStatsPane.heightProperty()
                 ).subtract(
-                        optionsPane.heightProperty()
+                        actionPane.heightProperty()
                 ).subtract(
                         enemyNameLabel.heightProperty()
                 )
@@ -108,40 +115,28 @@ public class PreviewEnemyScene extends Scene {
         heroAndEnemyPane.add(heroPane,0,0);
         heroAndEnemyPane.add(enemyPane,1,0);
 
-        // OPTIONSPANE
-        Button escapeButton = new Button("Spróbuj uciec");
-        Button fightButton = new Button("Zawalcz!");
-
-        escapeButton.setOnAction(event->{
-            escapeListeners.forEach(EscapeListener::onEscapeTry);
-        });
-        fightButton.setOnAction(event->{
-            fightListeners.forEach(FightListener::onFight);
-        });
-
-        optionsPane.getChildren().addAll(escapeButton,fightButton);
-        optionsPane.getChildren().forEach(node->{
+        // ACTIONPANE
+        actionPane.getChildren().addAll(escapeButton,attackButton);
+        actionPane.getChildren().forEach(node->{
             Button button = (Button) node;
-            button.setPrefHeight(40);
+            button.prefHeightProperty().bind(inventoryPane.heightProperty());
             button.setPrefWidth(200);
             button.setFont(Font.font("Arial", FontPosture.REGULAR, 25));
         });
-        optionsPane.setAlignment(Pos.BOTTOM_CENTER);
+
+        escapeButton.setOnAction(event->escapeListeners.forEach(EscapeListener::onEscapeTry));
+
+        actionPane.getChildren().add(inventoryPane);
 
         // LAYOUT
         root.setTop(heroAndEnemyStatsPane);
         root.setCenter(heroAndEnemyPane);
-        root.setBottom(optionsPane);
+        root.setBottom(actionPane);
     }
 
     public void addEscapeListener(EscapeListener escapeListener) {
         this.escapeListeners.add(escapeListener);
     }
-
-    public void addFightListener(FightListener fightListener) {
-        this.fightListeners.add(fightListener);
-    }
-
     public Hero getHero() {
         return HeroHandler.getHero();
     }

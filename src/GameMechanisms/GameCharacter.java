@@ -7,12 +7,14 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 public abstract class GameCharacter {
     private IntegerProperty healthPoints, attackPoints, defendPoints;
+    private IntegerProperty maxHealthPoints;
     private int basicAttackPoints, basicDefendPoints;
     private DoubleProperty critChance;
     private double basicCritChance;
     private String assetPath;
 
     public GameCharacter(int healthPoints, int attackPoints, int defendPoints, double critChance, String assetPath) {
+        this.maxHealthPoints = new SimpleIntegerProperty(healthPoints);
         this.healthPoints = new SimpleIntegerProperty(healthPoints);
         this.basicAttackPoints = attackPoints;
         this.attackPoints = new SimpleIntegerProperty(attackPoints);

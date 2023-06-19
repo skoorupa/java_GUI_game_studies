@@ -17,6 +17,7 @@ public class Hero extends GameCharacter {
     private DoubleProperty escapeChance;
     private BooleanProperty exhausted, alive, guarded;
     private Inventory inventory;
+    private boolean escapeSuccess;
 
     public Hero(int healthPoints, int attackPoints, int defendPoints, double critChance, String assetPath, int manaPoints, int cash, double escapeChance, boolean exhausted, boolean guarded) {
         super(healthPoints, attackPoints, defendPoints, critChance, assetPath);
@@ -26,6 +27,8 @@ public class Hero extends GameCharacter {
         this.exhausted = new SimpleBooleanProperty(exhausted);
         this.guarded = new SimpleBooleanProperty(guarded);
         this.alive = new SimpleBooleanProperty(true);
+
+        this.escapeSuccess = true;
 
         this.inventory = new Inventory();
         this.inventory.addChangeListener(() -> {
@@ -54,6 +57,24 @@ public class Hero extends GameCharacter {
             }
         }
         attackPoints.set(sum);
+    }
+
+    public boolean tryToEscape(Enemy enemy) {
+        double random = Math.random();
+        escapeSuccess = getEscapeChance() >= random;
+        return escapeSuccess;
+    }
+
+    public boolean isEscapeSuccess() {
+        return escapeSuccess;
+    }
+
+    public double getEscapeChance() {
+        return escapeChance.get();
+    }
+
+    public DoubleProperty escapeChanceProperty() {
+        return escapeChance;
     }
 
     public int getManaPoints() {

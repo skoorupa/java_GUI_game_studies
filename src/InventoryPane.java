@@ -1,6 +1,8 @@
 import GameMechanisms.Effect;
 import GameMechanisms.Hero;
 import GameMechanisms.Item;
+import GameMechanisms.ItemUsage;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.ListCell;
@@ -14,13 +16,12 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class InventoryPane extends HBox {
     private ListView<Item> inventoryListView;
     private ArrayList<Consumer<Item>> clickListeners;
 
-    public InventoryPane(BorderPane root) {
+    public InventoryPane(ObservableValue<? extends Number> widthProperty, boolean showPassive) {
         super();
         inventoryListView = new ListView<>();
         clickListeners = new ArrayList<>();
@@ -69,8 +70,12 @@ public class InventoryPane extends HBox {
             }
         });
 
-        inventoryListView.setItems(getHero().getInventory().getItemList());
-        inventoryListView.prefWidthProperty().bind(root.widthProperty());
+        if (!showPassive)
+            inventoryListView.setItems(getHero().getInventory().getItemListWithoutPassives());
+        else
+            inventoryListView.setItems(getHero().getInventory().getItemList());
+
+        inventoryListView.prefWidthProperty().bind(widthProperty);
         System.out.println(getHero().getInventory().getItemList());
 //        getHero().getInventory().addChangeListener(() -> {
 //            inventoryListView.setItems(getHero().getInventory().getItemList());

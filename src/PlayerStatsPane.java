@@ -51,6 +51,11 @@ public class PlayerStatsPane extends VBox {
             // CRITCHANCE
         addLabel("assets/ui/crit-chance.png", attackStatsPane, gameCharacter.critChanceProperty().asString(), "Szansa na obrażenia krytyczne");
 
+            // ESCAPECHANCE
+        if (gameCharacter instanceof Hero) {
+            addLabel("assets/ui/escape.png", attackStatsPane, ((Hero) gameCharacter).escapeChanceProperty().asString(), "Szansa na ucieczkę");
+        }
+
         // LAYOUT
         mainStatsPane.setAlignment(Pos.CENTER_LEFT);
         attackStatsPane.setAlignment(Pos.CENTER_LEFT);

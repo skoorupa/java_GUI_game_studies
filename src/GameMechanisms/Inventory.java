@@ -39,6 +39,10 @@ public class Inventory {
         return list;
     }
 
+    public ObservableList<Item> getItemListWithoutPassives() {
+        return list.filtered(item -> item.getItemUsage()!=ItemUsage.PASSIVE);
+    }
+
     public int size() {
         return list.size();
     }
