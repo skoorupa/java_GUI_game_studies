@@ -50,6 +50,7 @@ public class WelcomeScene extends Scene {
         shopButton_imageView.setFitWidth(80);
         shopButton_imageView.setFitHeight(80);
         shopButton.setGraphic(shopButton_imageView);
+        shopButton.setBackground(Background.EMPTY);
 
         shopPane.getChildren().addAll(shopButton);
         shopPane.setAlignment(Pos.CENTER);
@@ -68,6 +69,7 @@ public class WelcomeScene extends Scene {
 //            );
             previewEnemyListeners.forEach(PreviewEnemyListener::onPreview);
         });
+        fightButton.setBackground(Background.EMPTY);
 
         fightPane.getChildren().addAll(fightButton);
         fightPane.setAlignment(Pos.CENTER);

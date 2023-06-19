@@ -8,6 +8,16 @@ public class HeroHandler {
         hero.getInventory().addItem(Item.Food_Apple);
     }
 
+    public static void attackEnemy() {
+        Enemy enemy = EnemyHandler.getCurrentEnemy();
+        boolean isCrit = getHero().getCritChance()>Math.random();
+        int defendValue = enemy.getDefendPoints();
+        int damageValue = Math.max(getHero().getAttackPoints()-defendValue,15);
+        if (isCrit) damageValue *= 0.5;
+
+        enemy.getHit(damageValue);
+    }
+
     public static Hero getHero() {
         return hero;
     }

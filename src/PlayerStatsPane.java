@@ -1,8 +1,7 @@
 import GameMechanisms.Enemy;
 import GameMechanisms.GameCharacter;
 import GameMechanisms.Hero;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -26,15 +25,15 @@ public class PlayerStatsPane extends VBox {
 
         // MAINSTATSPANE
             // HP
-        addLabel("assets/ui/health-points.png", mainStatsPane, gameCharacter.healthPointsProperty().asString(),"Punkty zdrowia");
+        addLabel("assets/ui/health-points.png", mainStatsPane, gameCharacter.healthPointsProperty(),"Punkty zdrowia");
 
         if (gameCharacter instanceof Hero) {
             Hero hero = (Hero) gameCharacter;
             // MP
-            addLabel("assets/ui/mana-points.png", mainStatsPane, hero.manaPointsProperty().asString(), "Punkty magii");
+            addLabel("assets/ui/mana-points.png", mainStatsPane, hero.manaPointsProperty(), "Punkty magii");
 
             // CASH
-            addLabel("assets/ui/cash.png", mainStatsPane, hero.cashProperty().asString(), "Gotówka");
+            addLabel("assets/ui/cash.png", mainStatsPane, hero.cashProperty(), "Gotówka");
         } else if (gameCharacter instanceof Enemy) {
             Enemy enemy = (Enemy) gameCharacter;
             // PRIZE
@@ -43,17 +42,17 @@ public class PlayerStatsPane extends VBox {
 
         // ATTACKSSTATSPANE
             // ATTACKPOINTS
-        addLabel("assets/ui/attack-points.png", attackStatsPane, gameCharacter.attackPointsProperty().asString(), "Punkty ataku");
+        addLabel("assets/ui/attack-points.png", attackStatsPane, gameCharacter.attackPointsProperty(), "Punkty ataku");
 
             // DEFENDPOINTS
-        addLabel("assets/ui/defend-points.png", attackStatsPane, gameCharacter.defendPointsProperty().asString(), "Punkty obrony");
+        addLabel("assets/ui/defend-points.png", attackStatsPane, gameCharacter.defendPointsProperty(), "Punkty obrony");
 
             // CRITCHANCE
-        addLabel("assets/ui/crit-chance.png", attackStatsPane, gameCharacter.critChanceProperty().asString(), "Szansa na obrażenia krytyczne");
+        addLabel("assets/ui/crit-chance.png", attackStatsPane, gameCharacter.critChanceProperty(), "Szansa na obrażenia krytyczne");
 
             // ESCAPECHANCE
         if (gameCharacter instanceof Hero) {
-            addLabel("assets/ui/escape.png", attackStatsPane, ((Hero) gameCharacter).escapeChanceProperty().asString(), "Szansa na ucieczkę");
+            addLabel("assets/ui/escape-chance.png", attackStatsPane, ((Hero) gameCharacter).escapeChanceProperty(), "Szansa na ucieczkę");
         }
 
         // LAYOUT
@@ -77,7 +76,12 @@ public class PlayerStatsPane extends VBox {
         label.setBackground(new Background(new BackgroundFill(Color.WHITE,new CornerRadii(10), null)));
         label.setFont(Font.font("Arial",15));
         label.setPadding(new Insets(5));
-        label.textProperty().bind(ov);
+        if (ov instanceof SimpleIntegerProperty)
+            label.textProperty().bind(((SimpleIntegerProperty)ov).asString());
+        else if (ov instanceof SimpleDoubleProperty)
+            label.textProperty().bind(((SimpleDoubleProperty)ov).multiply(100).asString().concat("%"));
+        else
+            label.textProperty().bind(ov);
 
         Tooltip tooltip = new Tooltip(tooltipText);
         tooltip.setFont(Font.font("Arial", FontPosture.REGULAR,10));

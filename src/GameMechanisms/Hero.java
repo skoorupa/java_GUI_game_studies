@@ -59,6 +59,15 @@ public class Hero extends GameCharacter {
         attackPoints.set(sum);
     }
 
+    public void getHit(int damage) {
+        if (getHealthPoints() > damage)
+            healthPointsProperty().set(
+                    getHealthPoints()-damage
+            );
+        else
+            healthPointsProperty().set(0);
+    }
+
     public boolean tryToEscape(Enemy enemy) {
         double random = Math.random();
         escapeSuccess = getEscapeChance() >= random;

@@ -10,6 +10,15 @@ public class Enemy extends GameCharacter {
         this.prize = prize;
     }
 
+    public void getHit(int damage) {
+        if (getHealthPoints() > damage)
+            healthPointsProperty().set(
+                    getHealthPoints()-damage
+            );
+        else
+            healthPointsProperty().set(0);
+    }
+
     public String getName() {
         return name;
     }

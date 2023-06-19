@@ -1,10 +1,13 @@
 import GameMechanisms.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
+import javafx.concurrent.Worker;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -12,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 
@@ -21,7 +25,7 @@ public class FightScene extends Scene {
     private PlayerStatsPane heroStatsPane, enemyStatsPane;
     private VBox heroPane, enemyPane;
     private HBox actionPane;
-    private Button escapeButton, attackButton;
+    private Button shopButton, escapeButton, attackButton;
     private InventoryPane inventoryPane;
 
     private ArrayList<EscapeListener> escapeListeners;
@@ -38,8 +42,9 @@ public class FightScene extends Scene {
         heroPane = new VBox();
         enemyPane = new VBox();
         actionPane = new HBox();
-        escapeButton = new Button("Ucieczka");
-        attackButton = new Button("Atak");
+        shopButton = new Button();
+        escapeButton = new Button();
+        attackButton = new Button();
         inventoryPane = new InventoryPane(
                 root.widthProperty().subtract(escapeButton.widthProperty()).subtract(attackButton.widthProperty()),
                 false
@@ -116,15 +121,50 @@ public class FightScene extends Scene {
         heroAndEnemyPane.add(enemyPane,1,0);
 
         // ACTIONPANE
-        actionPane.getChildren().addAll(escapeButton,attackButton);
+            // ESCAPEBUTTON
+        Image escapeButton_image = new Image("assets/ui/escape.png");
+        ImageView escapeButton_imageView = new ImageView(escapeButton_image);
+        escapeButton_imageView.setPreserveRatio(true);
+        escapeButton.setGraphic(escapeButton_imageView);
+            // SHOPBUTTON
+        Image shopButton_image = new Image("assets/ui/shop.png");
+        ImageView shopButton_imageView = new ImageView(shopButton_image);
+        shopButton_imageView.setPreserveRatio(true);
+        shopButton.setGraphic(shopButton_imageView);
+            // ATTACKBUTTON
+        Image attackButton_image = new Image("assets/ui/attack.png");
+        ImageView attackButton_imageView = new ImageView(attackButton_image);
+        attackButton_imageView.setPreserveRatio(true);
+        attackButton.setGraphic(attackButton_imageView);
+
+        actionPane.getChildren().addAll(escapeButton,shopButton,attackButton);
         actionPane.getChildren().forEach(node->{
             Button button = (Button) node;
-            button.prefHeightProperty().bind(inventoryPane.heightProperty());
-            button.setPrefWidth(200);
-            button.setFont(Font.font("Arial", FontPosture.REGULAR, 25));
+            ImageView imageView = (ImageView) button.getGraphic();
+
+            button.setBackground(Background.EMPTY);
+            button.setPrefHeight(75);
+            imageView.setFitHeight(75);
         });
 
         escapeButton.setOnAction(event->escapeListeners.forEach(EscapeListener::onEscapeTry));
+        attackButton.setOnAction(event->{
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.ZERO, (evt)-> {
+                        HeroHandler.attackEnemy();
+                        animateImageDamage(enemy_imageView);
+                        actionPane.setVisible(false);
+                    }),
+                    new KeyFrame(Duration.seconds(1), (evt)-> {
+                        EnemyHandler.attackHero();
+                        animateImageDamage(player_imageView);
+                    }),
+                    new KeyFrame(Duration.seconds(2),(evt)->{
+                        actionPane.setVisible(true);
+                    })
+            );
+            timeline.play();
+        });
 
         actionPane.getChildren().add(inventoryPane);
 
@@ -132,6 +172,14 @@ public class FightScene extends Scene {
         root.setTop(heroAndEnemyStatsPane);
         root.setCenter(heroAndEnemyPane);
         root.setBottom(actionPane);
+    }
+    public void animateImageDamage(ImageView imageView) {
+        TranslateTransition transition = new TranslateTransition(Duration.millis(100));
+        transition.setAutoReverse(true);
+        transition.setCycleCount(2);
+        transition.setByY(50);
+        transition.setNode(imageView);
+        transition.playFromStart();
     }
 
     public void addEscapeListener(EscapeListener escapeListener) {
