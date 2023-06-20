@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 public class ScoreScene extends Scene {
     private BorderPane root;
     private ArrayList<BackListener> backListeners;
+    private Button backButton;
 
     public ScoreScene(Boolean win, Enemy enemy) {
         super(new BorderPane());
@@ -39,15 +41,20 @@ public class ScoreScene extends Scene {
         resultLabel.setTextFill(Color.WHITE);
 
         // BUTTON
-        Button goBackButton = new Button("Wróć");
-        goBackButton.setPrefHeight(40);
-        goBackButton.setPrefWidth(200);
-        goBackButton.setFont(Font.font("Arial", FontPosture.REGULAR, 25));
-        goBackButton.setOnAction(event-> backListeners.forEach(BackListener::goBack));
-        goBackButton.setAlignment(Pos.CENTER);
+        backButton = new Button();
+        ImageView backImage = new ImageView(new Image("assets/ui/back.png"));
+        backButton.setGraphic(backImage);
+        backButton.setPrefHeight(50);
+        backButton.setBackground(Background.EMPTY);
+        backImage.setPreserveRatio(true);
+        backImage.setFitHeight(50);
+
+        backButton.setOnAction(e->{
+            backListeners.forEach(BackListener::goBack);
+        });
 
         root.setCenter(resultLabel);
-        if (win) root.setBottom(goBackButton);
+        if (win) root.setBottom(backButton);
     }
 
     public void addBackListener(BackListener backListener) {
