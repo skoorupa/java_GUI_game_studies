@@ -8,7 +8,7 @@ public class EnemyHandler {
     private static ArrayList<Enemy> allEnemies;
     public static void initEnemies() {
         allEnemies = new ArrayList<>();
-        allEnemies.add(new Enemy(50,10,5,0.10,"Wściekły lis",15,"assets/enemies/angry_fox.png"));
+        allEnemies.add(new Enemy(50,10,5,10,"Wściekły lis",15,"assets/enemies/angry_fox.png"));
     }
 
     public static Enemy pickEnemy() {
@@ -21,7 +21,7 @@ public class EnemyHandler {
 
     public static boolean attackHero() {
         Hero hero = HeroHandler.getHero();
-        boolean isCrit = getCurrentEnemy().getCritChance()>Math.random();
+        boolean isCrit = getCurrentEnemy().getCritChance()/100>Math.random();
         int defendValue = hero.getDefendPoints();
         int damageValue = Math.max(getCurrentEnemy().getAttackPoints()-defendValue,5);
         if (isCrit) damageValue *= 0.5;
