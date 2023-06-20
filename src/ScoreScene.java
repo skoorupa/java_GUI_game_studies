@@ -1,6 +1,5 @@
 import GameMechanisms.Enemy;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,17 +14,17 @@ import java.util.ArrayList;
 
 public class ScoreScene extends Scene {
     private BorderPane root;
-    private ArrayList<BackToWelcomeListener> backToWelcomeListeners;
+    private ArrayList<BackListener> backListeners;
 
     public ScoreScene(Boolean win, Enemy enemy) {
         super(new BorderPane());
         root = (BorderPane) getRoot();
-        backToWelcomeListeners = new ArrayList<>();
+        backListeners = new ArrayList<>();
 
         // BACKGROUND
         // Image by upklyak on Freepik
         root.setBackground(new Background(new BackgroundImage(
-                new Image("assets/ui/forest.jpg"),
+                new Image("assets/ui/forest-background.jpg"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
@@ -44,18 +43,14 @@ public class ScoreScene extends Scene {
         goBackButton.setPrefHeight(40);
         goBackButton.setPrefWidth(200);
         goBackButton.setFont(Font.font("Arial", FontPosture.REGULAR, 25));
-        goBackButton.setOnAction(event->backToWelcomeListeners.forEach(BackToWelcomeListener::goBack));
+        goBackButton.setOnAction(event-> backListeners.forEach(BackListener::goBack));
         goBackButton.setAlignment(Pos.CENTER);
 
         root.setCenter(resultLabel);
-        root.setBottom(goBackButton);
+        if (win) root.setBottom(goBackButton);
     }
 
-    public void addBackToWelcomeListener(BackToWelcomeListener backToWelcomeListener) {
-        backToWelcomeListeners.add(backToWelcomeListener);
+    public void addBackListener(BackListener backListener) {
+        backListeners.add(backListener);
     }
-}
-
-interface BackToWelcomeListener {
-    void goBack();
 }

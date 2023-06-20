@@ -43,7 +43,7 @@ public class PreviewEnemyScene extends Scene {
         // BACKGROUND
         // Image by upklyak on Freepik
         root.setBackground(new Background(new BackgroundImage(
-                new Image("assets/ui/forest.jpg"),
+                new Image("assets/ui/forest-background.jpg"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,

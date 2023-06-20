@@ -1,5 +1,8 @@
 package GameMechanisms;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 public enum Item {
     Weapon_Sword1("Brązowy miecz",ItemType.HAND,2, new Effect[]{new Effect(TargetCharacter.ENEMY,TargetField.ATTACK,15)},ItemUsage.PASSIVE, "assets/items/hand/sword-1.png"),
     Weapon_Sword2("Srebrny miecz",ItemType.HAND,4, new Effect[]{new Effect(TargetCharacter.ENEMY,TargetField.ATTACK,25)},ItemUsage.PASSIVE, "assets/items/hand/sword-2.png"),
@@ -19,6 +22,12 @@ public enum Item {
         this.effects = effects;
         this.itemUsage = itemUsage;
         this.imagePath = imagePath;
+    }
+
+    public static ArrayList<Item> getListOfItems() {
+        ArrayList<Item> result = new ArrayList<>();
+        Collections.addAll(result, values());
+        return result;
     }
 
     public String getName() {

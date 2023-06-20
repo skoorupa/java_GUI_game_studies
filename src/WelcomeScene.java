@@ -15,6 +15,7 @@ public class WelcomeScene extends Scene {
     private FlowPane playerPane;
     private Button shopButton, fightButton;
     private ArrayList<PreviewEnemyListener> previewEnemyListeners;
+    private ArrayList<ShopListener> shopListeners;
 
     public WelcomeScene() {
         super(new BorderPane());
@@ -30,11 +31,12 @@ public class WelcomeScene extends Scene {
         shopButton = new Button();
         fightButton = new Button();
         previewEnemyListeners = new ArrayList<>();
+        shopListeners = new ArrayList<>();
 
         // BACKGROUND
             // Image by upklyak on Freepik
         root.setBackground(new Background(new BackgroundImage(
-                new Image("assets/ui/forest.jpg"),
+                new Image("assets/ui/forest-background.jpg"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
@@ -51,6 +53,9 @@ public class WelcomeScene extends Scene {
         shopButton_imageView.setFitHeight(80);
         shopButton.setGraphic(shopButton_imageView);
         shopButton.setBackground(Background.EMPTY);
+        shopButton.setOnAction(e->{
+            shopListeners.forEach(ShopListener::onShop);
+        });
 
         shopPane.getChildren().addAll(shopButton);
         shopPane.setAlignment(Pos.CENTER);
@@ -97,6 +102,10 @@ public class WelcomeScene extends Scene {
 
     public void addPreviewEnemyListener(PreviewEnemyListener previewEnemyListener) {
         previewEnemyListeners.add(previewEnemyListener);
+    }
+
+    public void addShopListener(ShopListener shopListener) {
+        shopListeners.add(shopListener);
     }
 
     private Hero getHero() {

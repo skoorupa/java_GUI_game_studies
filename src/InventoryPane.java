@@ -21,7 +21,10 @@ public class InventoryPane extends HBox {
     private ListView<Item> inventoryListView;
     private ArrayList<Consumer<Item>> clickListeners;
 
-    public InventoryPane(ObservableValue<? extends Number> widthProperty, boolean showPassive) {
+    public InventoryPane(
+            ObservableValue<? extends Number> widthProperty,
+            boolean showPassive
+    ) {
         super();
         inventoryListView = new ListView<>();
         clickListeners = new ArrayList<>();
@@ -51,7 +54,12 @@ public class InventoryPane extends HBox {
                             Tooltip tooltip = new Tooltip(item.getName());
                             for(Effect effect : item.getEffects()) {
                                 tooltip.setText(
-                                        tooltip.getText()+"\n  - "+effect.getTargetField().getText()+": "+effect.getValue()
+                                        tooltip.getText()+
+                                                "\n  - "+
+                                                effect.getTargetField().getText()+
+                                                ": "+
+                                                (effect.getValue()>0?"+":"")+
+                                                effect.getValue()
                                 );
                             }
                             tooltip.setShowDelay(new Duration(1));

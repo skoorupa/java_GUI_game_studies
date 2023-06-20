@@ -79,7 +79,7 @@ public class PlayerStatsPane extends VBox {
         if (ov instanceof SimpleIntegerProperty)
             label.textProperty().bind(((SimpleIntegerProperty)ov).asString());
         else if (ov instanceof SimpleDoubleProperty)
-            label.textProperty().bind(((SimpleDoubleProperty)ov).multiply(100).asString().concat("%"));
+            label.textProperty().bind(((SimpleDoubleProperty)ov).asString().concat("%"));
         else
             label.textProperty().bind(ov);
 

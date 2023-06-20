@@ -11,12 +11,9 @@ public class Enemy extends GameCharacter {
     }
 
     public void getHit(int damage) {
-        if (getHealthPoints() > damage)
-            healthPointsProperty().set(
-                    getHealthPoints()-damage
-            );
-        else
-            healthPointsProperty().set(0);
+        healthPointsProperty().set(
+                Math.max(getHealthPoints()-damage, 0)
+        );
     }
 
     public String getName() {

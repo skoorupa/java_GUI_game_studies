@@ -8,7 +8,8 @@ public enum TargetField {
     DEFEND("Obrona"),
     EXHAUSTED("Wyczerpanie"),
     GUARDED("Tarcza"),
-    CRITCHANCE("Szansa na obrażenia krytyczne");
+    CRITCHANCE("Szansa na obrażenia krytyczne"),
+    ESCAPECHANCE("Szansa na ucieczkę");
 
     String text;
 

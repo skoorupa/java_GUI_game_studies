@@ -1,8 +1,5 @@
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,7 +9,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 
 public class MenuScene extends Scene {
     private BorderPane root;
@@ -37,7 +33,7 @@ public class MenuScene extends Scene {
         // BACKGROUND
             // Image by upklyak on Freepik
         root.setBackground(new Background(new BackgroundImage(
-                new Image("assets/ui/forest.jpg"),
+                new Image("assets/ui/forest-background.jpg"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,

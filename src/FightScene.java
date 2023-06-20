@@ -2,9 +2,7 @@ import GameMechanisms.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
-import javafx.concurrent.Worker;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,7 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.util.Duration;
 
@@ -30,6 +27,7 @@ public class FightScene extends Scene {
 
     private ArrayList<EscapeListener> escapeListeners;
     private ArrayList<ScoreListener> scoreListeners;
+    private ArrayList<ShopListener> shopListeners;
 
     public FightScene() {
         super(new BorderPane());
@@ -49,15 +47,17 @@ public class FightScene extends Scene {
         inventoryPane = new InventoryPane(
                 root.widthProperty().subtract(escapeButton.widthProperty()).subtract(attackButton.widthProperty()),
                 false
+
         );
 
         escapeListeners = new ArrayList<>();
         scoreListeners = new ArrayList<>();
+        shopListeners = new ArrayList<>();
 
         // BACKGROUND
         // Image by upklyak on Freepik
         root.setBackground(new Background(new BackgroundImage(
-                new Image("assets/ui/forest.jpg"),
+                new Image("assets/ui/forest-background.jpg"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
@@ -150,34 +150,47 @@ public class FightScene extends Scene {
         });
 
         escapeButton.setOnAction(event->escapeListeners.forEach(EscapeListener::onEscapeTry));
+        shopButton.setOnAction(event->shopListeners.forEach(ShopListener::onShop));
         attackButton.setOnAction(event->{
-            Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.ZERO, (evt)-> {
-                        HeroHandler.attackEnemy();
-                        animateImageDamage(enemy_imageView);
-                        actionPane.setVisible(false);
-                    }),
-                    new KeyFrame(Duration.seconds(1), (evt)-> {
-                        if (EnemyHandler.attackHero())
-                            animateImageDamage(player_imageView);
-                    }),
-                    new KeyFrame(Duration.seconds(2),(evt)->{
-                        actionPane.setVisible(true);
-                        if (getHero().isDead())
-                            scoreListeners.forEach((scoreListener)->scoreListener.onScore(false, getEnemy()));
-                        else if (getEnemy().isDead())
-                            scoreListeners.forEach((scoreListener)->scoreListener.onScore(true, getEnemy()));
-                    })
-            );
-            timeline.play();
+            attackEnemy(true, player_imageView, enemy_imageView);
         });
 
+        // INVENTORYPANE
+        inventoryPane.addClickListener(item->{
+            HeroHandler.useItem(item);
+            if (item.getItemUsage() == ItemUsage.ACTIVE)
+                attackEnemy(false, player_imageView, enemy_imageView);
+
+        });
         actionPane.getChildren().add(inventoryPane);
 
         // LAYOUT
         root.setTop(heroAndEnemyStatsPane);
         root.setCenter(heroAndEnemyPane);
         root.setBottom(actionPane);
+    }
+    public void attackEnemy(boolean enemyAttack, ImageView heroImage, ImageView enemyImage) {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.ZERO, (evt)-> {
+                    actionPane.setVisible(false);
+                    if (enemyAttack) {
+                        HeroHandler.attackEnemy();
+                        animateImageDamage(enemyImage);
+                    }
+                }),
+                new KeyFrame(Duration.seconds(1), (evt)-> {
+                    if (EnemyHandler.attackHero())
+                        animateImageDamage(heroImage);
+                }),
+                new KeyFrame(Duration.seconds(2),(evt)->{
+                    actionPane.setVisible(true);
+                    if (getHero().isDead())
+                        scoreListeners.forEach((scoreListener)->scoreListener.onScore(false, getEnemy()));
+                    else if (getEnemy().isDead())
+                        scoreListeners.forEach((scoreListener)->scoreListener.onScore(true, getEnemy()));
+                })
+        );
+        timeline.play();
     }
     public void animateImageDamage(ImageView imageView) {
         TranslateTransition transition = new TranslateTransition(Duration.millis(100));
@@ -187,11 +200,14 @@ public class FightScene extends Scene {
         transition.setNode(imageView);
         transition.playFromStart();
     }
-
     public void addEscapeListener(EscapeListener escapeListener) {
         this.escapeListeners.add(escapeListener);
     }
     public void addScoreListener(ScoreListener scoreListener) {this.scoreListeners.add(scoreListener);}
+    public void addShopListener(ShopListener shopListener) {
+        this.shopListeners.add(shopListener);
+    }
+
     public Hero getHero() {
         return HeroHandler.getHero();
     }

@@ -24,8 +24,4 @@ public class Effect {
     }
 }
 
-enum TargetCharacter {
-    HERO, ENEMY
-}
-
 

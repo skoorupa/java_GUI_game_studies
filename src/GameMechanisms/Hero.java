@@ -60,19 +60,44 @@ public class Hero extends GameCharacter {
     }
 
     public void getHit(int damage) {
-        if (getHealthPoints() > damage)
-            healthPointsProperty().set(
-                    getHealthPoints()-damage
-            );
-        else
-            healthPointsProperty().set(0);
+        healthPointsProperty().set(
+                Math.max(getHealthPoints()-damage, 0)
+        );
     }
 
-    public boolean tryToEscape(Enemy enemy) {
-        double random = Math.random();
-        escapeSuccess = getEscapeChance() >= random;
-        return escapeSuccess;
+    // EFFECT METHODS
+
+    public void acceptManaEffect(Effect effect) {
+        manaPointsProperty().set(
+                getManaPoints() + effect.getValue()
+        );
     }
+
+    public void acceptCashEffect(Effect effect) {
+        cashProperty().set(
+                getCash() + effect.getValue()
+        );
+    }
+
+    public void acceptExhaustedEffect(Effect effect) {
+        exhaustedProperty().set(
+                effect.getValue() > 0
+        );
+    }
+
+    public void acceptGuardedEffect(Effect effect) {
+        guardedProperty().set(
+                effect.getValue() > 0
+        );
+    }
+
+    public void acceptEscapeChanceEffect(Effect effect) {
+        escapeChanceProperty().set(
+                getEscapeChance() + (double) effect.getValue() / 100
+        );
+    }
+
+    // GETTERS AND SETTERS
 
     public boolean isEscapeSuccess() {
         return escapeSuccess;
@@ -84,6 +109,10 @@ public class Hero extends GameCharacter {
 
     public DoubleProperty escapeChanceProperty() {
         return escapeChance;
+    }
+
+    public void setEscapeSuccess(boolean escapeSuccess) {
+        this.escapeSuccess = escapeSuccess;
     }
 
     public int getManaPoints() {

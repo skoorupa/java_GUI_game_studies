@@ -29,6 +29,41 @@ public abstract class GameCharacter {
 //        this.healthPoints.set(healthPoints);
 //    }
 
+    // EFFECT METHODS
+
+    public void acceptHealthEffect(Effect effect) {
+        healthPointsProperty().set(
+                getHealthPoints() + effect.getValue()
+        );
+    }
+
+    public void acceptAttackEffect(Effect effect) {
+        attackPointsProperty().set(
+                getAttackPoints() + effect.getValue()
+        );
+    }
+
+    public void acceptDefendEffect(Effect effect) {
+        defendPointsProperty().set(
+                getDefendPoints() + effect.getValue()
+        );
+    }
+
+    public void acceptCritChanceEffect(Effect effect) {
+        critChanceProperty().set(
+                getCritChance() + (double) effect.getValue() / 100
+        );
+    }
+
+    // GETTERS AND SETTERS
+
+    public boolean isAlive() {
+        return getHealthPoints()>0;
+    }
+    public boolean isDead() {
+        return getHealthPoints()<=0;
+    }
+
     public String getAssetPath() {
         return assetPath;
     }
@@ -75,11 +110,5 @@ public abstract class GameCharacter {
 
     public DoubleProperty critChanceProperty() {
         return critChance;
-    }
-    public boolean isAlive() {
-        return getHealthPoints()>0;
-    }
-    public boolean isDead() {
-        return getHealthPoints()<=0;
     }
 }

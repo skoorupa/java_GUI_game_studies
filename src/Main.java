@@ -8,6 +8,7 @@ public class Main extends Application {
     private static FightScene fightScene;
     private static PreviewEnemyScene previewEnemyScene;
     private static ScoreScene scoreScene;
+    private static ShopScene shopScene;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -30,26 +31,46 @@ public class Main extends Application {
             if (HeroHandler.getHero().isEscapeSuccess())
                 EnemyHandler.pickEnemy();
             previewEnemyScene = new PreviewEnemyScene();
+
             stage.setScene(previewEnemyScene);
 
             previewEnemyScene.addEscapeListener(()->escapeAction(stage));
 
             previewEnemyScene.addFightListener(()->{
                 fightScene = new FightScene();
+
                 fightScene.addEscapeListener(()->escapeAction(stage));
                 fightScene.addScoreListener(((win, enemy) -> {
                     System.out.println("score");
                     scoreScene = new ScoreScene(win, enemy);
-                    scoreScene.addBackToWelcomeListener(()->{
+                    scoreScene.addBackListener(()->{
                         stage.setScene(welcomeScene);
                     });
                     stage.setScene(scoreScene);
                 }));
+                fightScene.addShopListener(()->{
+                    shopScene = new ShopScene();
+                    stage.setScene(shopScene);
+
+                    shopScene.addBackListener(()->{
+                        stage.setScene(fightScene);
+                    });
+                });
+
                 stage.setScene(fightScene);
             });
         });
 
-        creditsScene.setCloseListener(()->stage.setScene(menuScene));
+        welcomeScene.addShopListener(()->{
+            shopScene = new ShopScene();
+            stage.setScene(shopScene);
+
+            shopScene.addBackListener(()->{
+                stage.setScene(welcomeScene);
+            });
+        });
+
+        creditsScene.setBackListener(()->stage.setScene(menuScene));
 
         stage.setTitle("Projekt");
         stage.setHeight(720);
@@ -59,7 +80,7 @@ public class Main extends Application {
     }
 
     public static void escapeAction(Stage stage) {
-        HeroHandler.getHero().tryToEscape(EnemyHandler.getCurrentEnemy());
+        HeroHandler.tryToEscape(EnemyHandler.getCurrentEnemy());
         if (HeroHandler.getHero().isEscapeSuccess()) {
             stage.setScene(welcomeScene);
         } else {
