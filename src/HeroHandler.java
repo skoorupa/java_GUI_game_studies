@@ -3,7 +3,7 @@ import GameMechanisms.*;
 public class HeroHandler {
     private static Hero hero;
     public static void initHero() {
-        hero = new Hero(100,0,0,5, "assets/ui/knight.png",0,0, 50, false,false);
+        hero = new Hero(100,5,0,5, "assets/ui/knight.png",0,0, 50, false,false);
         hero.getInventory().addItem(Item.Weapon_Sword1);
         hero.getInventory().addItem(Item.Food_Apple);
     }
@@ -15,10 +15,11 @@ public class HeroHandler {
         boolean isCrit = getHero().getCritChance()/100>Math.random();
         int defendValue = enemy.getDefendPoints();
         int damageValue = Math.max(getHero().getAttackPoints()-defendValue,5);
-        if (isCrit) damageValue *= 0.5;
+        if (isCrit) damageValue *= 1.5;
 
         enemy.getHit(damageValue);
         if (enemy.getHealthPoints()<=0) {
+            enemy.setDefeated();
             getHero().setCash(getHero().getCash() + enemy.getPrize());
             return true;
         } else return false;

@@ -11,6 +11,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.util.Callback;
 import javafx.util.Duration;
 
@@ -64,6 +65,7 @@ public class InventoryPane extends HBox {
                             }
                             tooltip.setShowDelay(new Duration(1));
                             tooltip.setHideDelay(new Duration(1));
+                            tooltip.setFont(Font.font(15));
 
                             setTooltip(tooltip);
                             setGraphic(imageView);

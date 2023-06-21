@@ -1,7 +1,9 @@
 import GameMechanisms.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class EnemyHandler {
     private static Enemy currentEnemy;
@@ -14,9 +16,13 @@ public class EnemyHandler {
     public static Enemy pickEnemy() {
 //        ArrayList<Enemy> allEnemies = new ArrayList<>();
 //        allEnemies.add(new Enemy(50,10,10,0.10,"Wściekły lis",15,"assets/enemies/angry_fox.png"));
-
-        currentEnemy = allEnemies.get(new Random().nextInt(0, allEnemies.size()));
+        ArrayList<Enemy> availableEnemies = getAvailableEnemies();
+        currentEnemy = availableEnemies.get(new Random().nextInt(0, availableEnemies.size()));
         return getCurrentEnemy();
+    }
+
+    public static ArrayList<Enemy> getAvailableEnemies() {
+        return (ArrayList<Enemy>) allEnemies.stream().filter(enemy->!enemy.isDefeated()).collect(Collectors.toList());
     }
 
     public static boolean attackHero() {

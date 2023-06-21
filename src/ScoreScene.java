@@ -37,6 +37,8 @@ public class ScoreScene extends Scene {
         Label resultLabel = new Label(
                 win?"WYGRAŁEŚ!":"PRZEGRAŁEŚ"
         );
+        if (EnemyHandler.getAvailableEnemies().size()==0)
+            resultLabel.setText("WYGRAŁEŚ CAŁĄ GRĘ!");
         resultLabel.setFont(Font.font("Arial", FontWeight.BOLD, 30));
         resultLabel.setTextFill(Color.WHITE);
 
@@ -54,7 +56,7 @@ public class ScoreScene extends Scene {
         });
 
         root.setCenter(resultLabel);
-        if (win) root.setBottom(backButton);
+        if (win && EnemyHandler.getAvailableEnemies().size()>0) root.setBottom(backButton);
     }
 
     public void addBackListener(BackListener backListener) {
