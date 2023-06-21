@@ -69,9 +69,6 @@ public class WelcomeScene extends Scene {
         fightButton_imageView.setFitHeight(80);
         fightButton.setGraphic(fightButton_imageView);
         fightButton.setOnAction(e->{
-//            HeroHandler.getHero().getInventory().addItem(
-//                    Item.Weapon_Sword2
-//            );
             previewEnemyListeners.forEach(PreviewEnemyListener::onPreview);
         });
         fightButton.setBackground(Background.EMPTY);
@@ -90,7 +87,11 @@ public class WelcomeScene extends Scene {
         playerPane.setAlignment(Pos.CENTER);
 
             // INVENTORYPANE
-        inventoryPane.addClickListener(System.out::println);
+        inventoryPane.addClickListener(InventoryPane.DROP_ITEM);
+//        getHero().getInventory().addChangeListener(()->{
+//            playerStatsPane = new PlayerStatsPane(getHero());
+//            root.setTop(playerStatsPane);
+//        });
 
         // LAYOUT
         root.setTop(playerStatsPane);

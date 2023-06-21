@@ -3,11 +3,11 @@ import GameMechanisms.Hero;
 import GameMechanisms.Item;
 import GameMechanisms.ItemUsage;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -80,23 +80,45 @@ public class InventoryPane extends HBox {
             }
         });
 
+        ObservableList<Item> itemList;
+
         if (!showPassive)
-            inventoryListView.setItems(getHero().getInventory().getItemListWithoutPassives());
+            itemList = getHero().getInventory().getItemListWithoutPassives();
         else
-            inventoryListView.setItems(getHero().getInventory().getItemList());
+            itemList = getHero().getInventory().getItemList();
+
+        inventoryListView.setItems(itemList);
+        itemList.addListener((ListChangeListener<? super Item>) change -> refresh());
 
         inventoryListView.prefWidthProperty().bind(widthProperty);
-        System.out.println(getHero().getInventory().getItemList());
-//        getHero().getInventory().addChangeListener(() -> {
-//            inventoryListView.setItems(getHero().getInventory().getItemList());
-//        });
 
         getChildren().add(inventoryListView);
         setAlignment(Pos.BOTTOM_CENTER);
     }
 
+    public static final Consumer<Item> DROP_ITEM = (item)->{
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Usuwanie przedmiotu");
+        dialog.setHeaderText("Czy na pewno chcesz usunąć przedmiot "+item.getName()+"?");
+        ButtonType yesButton = new ButtonType("Tak", ButtonBar.ButtonData.YES);
+        ButtonType noButton = new ButtonType("Nie", ButtonBar.ButtonData.NO);
+        dialog.getDialogPane().getButtonTypes().addAll(yesButton,noButton);
+
+        dialog.showAndWait().ifPresent(response->{
+            if (response == yesButton) {
+                HeroHandler.getHero().getInventory().removeItem(item);
+            } else {
+                dialog.close();
+            }
+        });
+    };
+
     public void addClickListener(Consumer<Item> consumer) {
         clickListeners.add(consumer);
+    }
+
+    public void refresh() {
+        inventoryListView.refresh();
     }
 
     private Hero getHero() {

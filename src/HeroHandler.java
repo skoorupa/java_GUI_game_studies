@@ -3,7 +3,7 @@ import GameMechanisms.*;
 public class HeroHandler {
     private static Hero hero;
     public static void initHero() {
-        hero = new Hero(100,5,0,5, "assets/ui/knight.png",0,0, 50, false,false);
+        hero = new Hero(100,5,0,5, "assets/ui/knight.png",0,0, 80, false,false);
         hero.getInventory().addItem(Item.Weapon_Sword1);
         hero.getInventory().addItem(Item.Food_Apple);
     }
@@ -16,6 +16,10 @@ public class HeroHandler {
         int defendValue = enemy.getDefendPoints();
         int damageValue = Math.max(getHero().getAttackPoints()-defendValue,5);
         if (isCrit) damageValue *= 1.5;
+        if (hero.getPoweredup()) {
+            damageValue *= 2;
+            hero.setPoweredup(false);
+        }
 
         enemy.getHit(damageValue);
         if (enemy.getHealthPoints()<=0) {
@@ -45,7 +49,7 @@ public class HeroHandler {
                         targetCharacter.acceptAttackEffect(effect);
                 case DEFEND ->
                         targetCharacter.acceptDefendEffect(effect);
-                case EXHAUSTED -> // tylko HERO
+                case POWEREDUP -> // tylko HERO
                         getHero().acceptExhaustedEffect(effect);
                 case GUARDED -> // tylko HERO
                         getHero().acceptGuardedEffect(effect);

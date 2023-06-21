@@ -4,9 +4,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -61,10 +59,23 @@ public class ShopScene extends Scene {
             button.setOnAction(event->{
                 Hero hero = HeroHandler.getHero();
                 if (hero.getCash() >= item.getCost()) {
-                    hero.getInventory().addItem(item);
-                    hero.setCash(
-                            hero.getCash() - item.getCost()
-                    );
+                    if (hero.getInventory().addItem(item))
+                        hero.setCash(
+                                hero.getCash() - item.getCost()
+                        );
+                    else {
+                        Dialog dialog = new Dialog<>();
+                        dialog.setTitle("Sklep");
+                        dialog.setHeaderText("Brak miejsca w ekwipunku");
+                        dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+                        dialog.show();
+                    }
+                } else {
+                    Dialog dialog = new Dialog<>();
+                    dialog.setTitle("Sklep");
+                    dialog.setHeaderText("Niewystarczająca ilość pieniędzy");
+                    dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+                    dialog.show();
                 }
             });
 

@@ -1,30 +1,20 @@
 package GameMechanisms;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.*;
-import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
-
-import java.io.Serializable;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class Hero extends GameCharacter {
     private IntegerProperty manaPoints, cash;
     private DoubleProperty escapeChance;
-    private BooleanProperty exhausted, alive, guarded;
+    private BooleanProperty poweredup, alive, guarded;
     private Inventory inventory;
     private boolean escapeSuccess;
 
-    public Hero(int healthPoints, int attackPoints, int defendPoints, double critChance, String assetPath, int manaPoints, int cash, double escapeChance, boolean exhausted, boolean guarded) {
+    public Hero(int healthPoints, int attackPoints, int defendPoints, double critChance, String assetPath, int manaPoints, int cash, double escapeChance, boolean poweredup, boolean guarded) {
         super(healthPoints, attackPoints, defendPoints, critChance, assetPath);
         this.manaPoints = new SimpleIntegerProperty(manaPoints);
         this.cash = new SimpleIntegerProperty(cash);
         this.escapeChance = new SimpleDoubleProperty(escapeChance);
-        this.exhausted = new SimpleBooleanProperty(exhausted);
+        this.poweredup = new SimpleBooleanProperty(poweredup);
         this.guarded = new SimpleBooleanProperty(guarded);
         this.alive = new SimpleBooleanProperty(true);
 
@@ -80,7 +70,7 @@ public class Hero extends GameCharacter {
     }
 
     public void acceptExhaustedEffect(Effect effect) {
-        exhaustedProperty().set(
+        poweredupProperty().set(
                 effect.getValue() > 0
         );
     }
@@ -135,12 +125,16 @@ public class Hero extends GameCharacter {
         return cash;
     }
 
-    public boolean isExhausted() {
-        return exhausted.get();
+    public boolean getPoweredup() {
+        return poweredup.get();
     }
 
-    public BooleanProperty exhaustedProperty() {
-        return exhausted;
+    public void setPoweredup(boolean poweredup) {
+        this.poweredup.set(poweredup);
+    }
+
+    public BooleanProperty poweredupProperty() {
+        return poweredup;
     }
 
     public boolean isAlive() {
@@ -153,6 +147,18 @@ public class Hero extends GameCharacter {
 
     public boolean isGuarded() {
         return guarded.get();
+    }
+
+    public void setManaPoints(int manaPoints) {
+        this.manaPoints.set(manaPoints);
+    }
+
+    public void setEscapeChance(double escapeChance) {
+        this.escapeChance.set(escapeChance);
+    }
+
+    public void setGuarded(boolean guarded) {
+        this.guarded.set(guarded);
     }
 
     public BooleanProperty guardedProperty() {

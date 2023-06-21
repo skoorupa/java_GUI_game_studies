@@ -6,7 +6,7 @@ public enum TargetField {
     CASH("Gotówka"),
     ATTACK("Atak"),
     DEFEND("Obrona"),
-    EXHAUSTED("Wyczerpanie"),
+    POWEREDUP("Turbonaładowanie"),
     GUARDED("Tarcza"),
     CRITCHANCE("Szansa na obrażenia krytyczne"),
     ESCAPECHANCE("Szansa na ucieczkę");
