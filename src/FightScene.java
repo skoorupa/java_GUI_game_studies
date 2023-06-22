@@ -157,8 +157,7 @@ public class FightScene extends Scene {
 
         // INVENTORYPANE
         inventoryPane.addClickListener(item->{
-            HeroHandler.useItem(item);
-            if (item.getItemUsage() == ItemUsage.ACTIVE)
+            if (HeroHandler.useItem(item) && item.getItemUsage() == ItemUsage.ACTIVE)
                 attackEnemy(false, player_imageView, enemy_imageView);
 
         });
@@ -175,8 +174,8 @@ public class FightScene extends Scene {
                     actionPane.setVisible(false);
                     if (enemyAttack) {
                         HeroHandler.attackEnemy();
-                        animateImageDamage(enemyImage);
                     }
+                    animateImageDamage(enemyImage);
                 }),
                 new KeyFrame(Duration.seconds(1), (evt)-> {
                     if (EnemyHandler.attackHero())

@@ -8,6 +8,7 @@ public enum TargetField {
     DEFEND("Obrona"),
     POWEREDUP("Turbonaładowanie"),
     GUARDED("Tarcza"),
+    HIT("Uderzenie"),
     CRITCHANCE("Szansa na obrażenia krytyczne"),
     ESCAPECHANCE("Szansa na ucieczkę");
 

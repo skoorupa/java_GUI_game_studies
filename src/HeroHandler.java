@@ -29,7 +29,23 @@ public class HeroHandler {
         } else return false;
     }
 
-    public static void useItem(Item item) {
+    public static boolean useItem(Item item) {
+        for (Effect effect : item.getEffects()) {
+            GameCharacter targetCharacter;
+
+            if (effect.getTargetCharacter() == TargetCharacter.HERO)
+                targetCharacter = getHero();
+            else
+                targetCharacter = EnemyHandler.getCurrentEnemy();
+
+            // sprawdzanie, czy efekt może zostać uzyty gdy odejmowane sa pkt
+            switch (effect.getTargetField()) {
+                case MANA -> {
+                    if (!getHero().tryManaEffect(effect)) return false;
+                }
+            }
+        }
+
         for (Effect effect : item.getEffects()) {
             GameCharacter targetCharacter;
 
@@ -49,6 +65,8 @@ public class HeroHandler {
                         targetCharacter.acceptAttackEffect(effect);
                 case DEFEND ->
                         targetCharacter.acceptDefendEffect(effect);
+                case HIT ->
+                        targetCharacter.acceptHitEffect(effect);
                 case POWEREDUP -> // tylko HERO
                         getHero().acceptExhaustedEffect(effect);
                 case GUARDED -> // tylko HERO
@@ -62,6 +80,8 @@ public class HeroHandler {
 
         if (item.getItemUsage() == ItemUsage.USEABLE)
             getHero().getInventory().removeItem(item);
+
+        return true;
     }
 
     public static boolean tryToEscape(Enemy enemy) {

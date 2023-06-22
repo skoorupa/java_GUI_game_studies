@@ -33,25 +33,31 @@ public abstract class GameCharacter {
 
     public void acceptHealthEffect(Effect effect) {
         healthPointsProperty().set(
-                getHealthPoints() + effect.getValue()
+                Math.max(getHealthPoints() + effect.getValue(),0)
+        );
+    }
+
+    public void acceptHitEffect(Effect effect) {
+        healthPointsProperty().set(
+                Math.max(getHealthPoints() - effect.getValue(),0)
         );
     }
 
     public void acceptAttackEffect(Effect effect) {
         attackPointsProperty().set(
-                getAttackPoints() + effect.getValue()
+                Math.max(getAttackPoints() + effect.getValue(),0)
         );
     }
 
     public void acceptDefendEffect(Effect effect) {
         defendPointsProperty().set(
-                getDefendPoints() + effect.getValue()
+                Math.max(getDefendPoints() + effect.getValue(),0)
         );
     }
 
     public void acceptCritChanceEffect(Effect effect) {
         critChanceProperty().set(
-                getCritChance() + (double) effect.getValue() / 100
+                Math.max(getCritChance() + (double) effect.getValue() / 100,0)
         );
     }
 

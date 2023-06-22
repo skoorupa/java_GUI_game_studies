@@ -30,7 +30,7 @@ public class Hero extends GameCharacter {
 
     private void recalculateAttackStat(IntegerProperty attackPoints, Inventory inventory, TargetField targetField, int basicPoints) {
         int sum = basicPoints;
-        for (Item item : inventory.getItemList()) {
+        for (Item item : inventory.getPassiveItemList()) {
             for (Effect effect : item.getEffects()) {
                 if (effect.getTargetField()==targetField)
                     sum+=effect.getValue();
@@ -40,7 +40,7 @@ public class Hero extends GameCharacter {
     }
     private void recalculateAttackStat(DoubleProperty attackPoints, Inventory inventory, TargetField targetField, double basicPoints) {
         double sum = basicPoints;
-        for (Item item : inventory.getItemList()) {
+        for (Item item : inventory.getPassiveItemList()) {
             for (Effect effect : item.getEffects()) {
                 if (effect.getTargetField()==targetField)
                     sum+=effect.getValue();
@@ -61,6 +61,10 @@ public class Hero extends GameCharacter {
         manaPointsProperty().set(
                 getManaPoints() + effect.getValue()
         );
+    }
+    public boolean tryManaEffect(Effect effect) {
+        if (getManaPoints() + effect.getValue() < 0) return false;
+        else return true;
     }
 
     public void acceptCashEffect(Effect effect) {
