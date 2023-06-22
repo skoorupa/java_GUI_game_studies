@@ -68,7 +68,7 @@ public class HeroHandler {
                 case HIT ->
                         targetCharacter.acceptHitEffect(effect);
                 case POWEREDUP -> // tylko HERO
-                        getHero().acceptExhaustedEffect(effect);
+                        getHero().acceptPoweredupEffect(effect);
                 case GUARDED -> // tylko HERO
                         getHero().acceptGuardedEffect(effect);
                 case CRITCHANCE ->

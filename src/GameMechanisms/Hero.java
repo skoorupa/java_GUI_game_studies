@@ -73,7 +73,7 @@ public class Hero extends GameCharacter {
         );
     }
 
-    public void acceptExhaustedEffect(Effect effect) {
+    public void acceptPoweredupEffect(Effect effect) {
         poweredupProperty().set(
                 effect.getValue() > 0
         );

@@ -12,8 +12,9 @@ public class EnemyHandler {
         allEnemies = new ArrayList<>();
         allEnemies.add(new Enemy(40,10,5,10,"Wściekły lis",20,"assets/enemies/angry_fox.png"));
         allEnemies.add(new Enemy(50,20,5,30,"Świąteczne zombie",40,"assets/enemies/christmas_zombie.png"));
-        allEnemies.add(new Enemy(60,20,10,25,"Szalony muppet",60,"assets/enemies/crazy_muppet.png"));
+        allEnemies.add(new Enemy(60,20,10,25,"Wilk",60,"assets/enemies/wolf.png"));
         allEnemies.add(new Enemy(100,30,20,40,"Wampir",80,"assets/enemies/vampir.png"));
+        allEnemies.add(new Enemy(30,15,5,50,"Dziki wąż",30,"assets/enemies/snake.png"));
     }
 
     public static Enemy pickEnemy() {

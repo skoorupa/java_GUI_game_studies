@@ -116,6 +116,8 @@ public class ShopScene extends Scene {
         backImage.setPreserveRatio(true);
         backImage.setFitHeight(50);
 
+        inventoryPane.addClickListener(InventoryPane.DROP_ITEM);
+
         backButton.setOnAction(e->{
             backListeners.forEach(BackListener::goBack);
         });
