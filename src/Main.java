@@ -72,7 +72,7 @@ public class Main extends Application {
 
         creditsScene.setBackListener(()->stage.setScene(menuScene));
 
-        stage.setTitle("Projekt");
+        stage.setTitle("GUI GAME - Projekt");
         stage.setHeight(720);
         stage.setWidth(1080);
         stage.setScene(menuScene);

@@ -2,6 +2,7 @@ import GameMechanisms.Hero;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -52,10 +53,11 @@ public class WelcomeScene extends Scene {
         shopButton_imageView.setFitWidth(80);
         shopButton_imageView.setFitHeight(80);
         shopButton.setGraphic(shopButton_imageView);
-        shopButton.setBackground(Background.EMPTY);
         shopButton.setOnAction(e->{
             shopListeners.forEach(ShopListener::onShop);
         });
+        shopButton.setBackground(Background.EMPTY);
+        Tooltip.install(shopButton,new Tooltip("Sklep"));
 
         shopPane.getChildren().addAll(shopButton);
         shopPane.setAlignment(Pos.CENTER);
@@ -72,6 +74,7 @@ public class WelcomeScene extends Scene {
             previewEnemyListeners.forEach(PreviewEnemyListener::onPreview);
         });
         fightButton.setBackground(Background.EMPTY);
+        Tooltip.install(fightButton,new Tooltip("Walcz"));
 
         fightPane.getChildren().addAll(fightButton);
         fightPane.setAlignment(Pos.CENTER);

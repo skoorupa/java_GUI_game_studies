@@ -3,7 +3,7 @@ import GameMechanisms.*;
 public class HeroHandler {
     private static Hero hero;
     public static void initHero() {
-        hero = new Hero(100,5,0,5, "assets/ui/knight.png",0,0, 80, false,false);
+        hero = new Hero(100,5,0,20, "assets/ui/knight.png",0,0, 60, false,false);
         hero.getInventory().addItem(Item.Weapon_Sword1);
         hero.getInventory().addItem(Item.Food_Apple);
     }

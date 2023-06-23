@@ -4,6 +4,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -109,22 +110,36 @@ public class PreviewEnemyScene extends Scene {
         heroAndEnemyPane.add(enemyPane,1,0);
 
         // OPTIONSPANE
-        Button escapeButton = new Button("Spróbuj uciec");
-        Button fightButton = new Button("Zawalcz!");
+        Button escapeButton = new Button();
+        Button fightButton = new Button();
 
+        Image escapeButton_image = new Image("assets/ui/escape.png");
+        ImageView escapeButton_imageView = new ImageView(escapeButton_image);
+        escapeButton_imageView.setPreserveRatio(true);
+        escapeButton_imageView.setFitWidth(80);
+        escapeButton_imageView.setFitHeight(80);
+        escapeButton.setGraphic(escapeButton_imageView);
         escapeButton.setOnAction(event->{
             escapeListeners.forEach(EscapeListener::onEscapeTry);
         });
+        Tooltip.install(escapeButton,new Tooltip("Spróbuj uciec"));
+
+        Image fightButton_image = new Image("assets/ui/swords-emblem.png");
+        ImageView fightButton_imageView = new ImageView(fightButton_image);
+        fightButton_imageView.setPreserveRatio(true);
+        fightButton_imageView.setFitWidth(80);
+        fightButton_imageView.setFitHeight(80);
+        fightButton.setGraphic(fightButton_imageView);
         fightButton.setOnAction(event->{
             fightListeners.forEach(FightListener::onFight);
         });
+        Tooltip.install(fightButton,new Tooltip("Przystąp do walki"));
 
         optionsPane.getChildren().addAll(escapeButton,fightButton);
-        optionsPane.getChildren().forEach(node->{
+        optionsPane.getChildren().forEach(node-> {
             Button button = (Button) node;
-            button.setPrefHeight(40);
-            button.setPrefWidth(200);
-            button.setFont(Font.font("Arial", FontPosture.REGULAR, 25));
+            button.setPrefSize(80,80);
+            button.setBackground(Background.EMPTY);
         });
         optionsPane.setAlignment(Pos.BOTTOM_CENTER);
 

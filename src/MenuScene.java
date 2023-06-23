@@ -41,7 +41,7 @@ public class MenuScene extends Scene {
         )));
 
         // TITLE
-        title = new Label("PROJEKT GUI");
+        title = new Label("GUI GAME");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 50));
         title.setTextFill(Color.WHITE);
 

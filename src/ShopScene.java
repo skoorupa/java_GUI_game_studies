@@ -91,7 +91,12 @@ public class ShopScene extends Scene {
                 );
             }
             tooltip.setFont(Font.font(15));
-            tooltip.setText(tooltip.getText()+"\n\n$"+item.getCost()+" dukatów");
+            tooltip.setText(
+                    tooltip.getText()+
+                            "\n"+
+                            "\n("+item.getType().getText()+","+item.getItemUsage().getText()+")"+
+                            "\n$"+item.getCost()+" dukatów"
+            );
             tooltip.setHideDelay(Duration.ZERO);
             tooltip.setShowDelay(Duration.ZERO);
             Tooltip.install(button,tooltip);
@@ -110,11 +115,12 @@ public class ShopScene extends Scene {
 
         // BACKBUTTON
         ImageView backImage = new ImageView(new Image("assets/ui/back.png"));
-        backButton.setGraphic(backImage);
-        backButton.setPrefHeight(50);
-        backButton.setBackground(Background.EMPTY);
         backImage.setPreserveRatio(true);
         backImage.setFitHeight(50);
+        backButton.setGraphic(backImage);
+        Tooltip.install(backButton,new Tooltip("Powrót"));
+        backButton.setPrefHeight(50);
+        backButton.setBackground(Background.EMPTY);
 
         inventoryPane.addClickListener(InventoryPane.DROP_ITEM);
 

@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -57,7 +58,7 @@ public class FightScene extends Scene {
         // BACKGROUND
         // Image by upklyak on Freepik
         root.setBackground(new Background(new BackgroundImage(
-                new Image("assets/ui/forest-background.jpg"),
+                new Image("assets/ui/fight-background.jpg"),
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER,
@@ -128,16 +129,19 @@ public class FightScene extends Scene {
         ImageView escapeButton_imageView = new ImageView(escapeButton_image);
         escapeButton_imageView.setPreserveRatio(true);
         escapeButton.setGraphic(escapeButton_imageView);
+        Tooltip.install(escapeButton,new Tooltip("Uciekaj"));
             // SHOPBUTTON
         Image shopButton_image = new Image("assets/ui/shop.png");
         ImageView shopButton_imageView = new ImageView(shopButton_image);
         shopButton_imageView.setPreserveRatio(true);
         shopButton.setGraphic(shopButton_imageView);
+        Tooltip.install(shopButton,new Tooltip("Sklep"));
             // ATTACKBUTTON
         Image attackButton_image = new Image("assets/ui/attack.png");
         ImageView attackButton_imageView = new ImageView(attackButton_image);
         attackButton_imageView.setPreserveRatio(true);
         attackButton.setGraphic(attackButton_imageView);
+        Tooltip.install(attackButton,new Tooltip("Atakuj"));
 
         actionPane.getChildren().addAll(escapeButton,shopButton,attackButton);
         actionPane.getChildren().forEach(node->{
