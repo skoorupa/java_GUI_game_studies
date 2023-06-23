@@ -41,7 +41,6 @@ public class Main extends Application {
 
                 fightScene.addEscapeListener(()->escapeAction(stage));
                 fightScene.addScoreListener(((win, enemy) -> {
-                    System.out.println("score");
                     scoreScene = new ScoreScene(win, enemy);
                     scoreScene.addBackListener(()->{
                         stage.setScene(welcomeScene);
