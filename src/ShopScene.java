@@ -66,7 +66,8 @@ public class ShopScene extends Scene {
                     else {
                         Dialog dialog = new Dialog<>();
                         dialog.setTitle("Sklep");
-                        dialog.setHeaderText("Brak miejsca w ekwipunku");
+                        dialog.setHeaderText("Brak miejsca w ekwipunku na typ "+item.getType().getText());
+                        dialog.setContentText("Ilość slotów dla typu "+item.getType().getText()+": "+item.getType().getSlots());
                         dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
                         dialog.show();
                     }
